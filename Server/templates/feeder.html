@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeder</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+        crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const socket = io();
+
+        function inject(data) {
+            socket.emit('injector', { data: data });
+        }
+
+        const input = document.getElementById('injectInput');
+        const sendButton = document.getElementById('sendButton');
+
+        sendButton.onclick = function() {
+            var inputValue = input.value;
+            if (inputValue.trim() !== '') {
+                inject({command: "type", val: inputValue});
+                input.value = '';
+            }
+        };
+    });
+    </script>
+</head>
+
+<body>
+
+    <p>{{ ip }}</p>
+    <br>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4"/>
+    <br>    
+    <input type="text" id="injectInput" placeholder="Enter text to inject"> 
+    <button id="sendButton">Send</button>
+    <br>
+    <a href="{{ url_for('observer') }}">Go to KeyLogger</a>
+
+</body>
+
+</html>

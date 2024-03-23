@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observer</title>
     <style>
+
+        body {
+            background-color: lightblue;
+        }
         #logContainer {
             white-space: pre;
             overflow-x: auto;
@@ -16,6 +20,47 @@
             font-size: 1.8em;
             font-family: monospace;
             padding: 0.7em;
+        }
+        
+        .screen_base {
+            border: 20px outset black;
+            background-color: grey;    
+            text-align: center;
+            width: 97%;
+            height: 30em;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .keyboard_base {
+            border: 20px outset black;
+            background-color: grey;    
+            text-align: center;
+            width: 97%;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .column--left {
+        float: left;
+        width: 20%;
+        }
+
+        .column--right {
+        float: left;
+        width: 80%;
+        }
+
+        .container1{
+        background: white;
+        width: 98%;
+        height: 100%;
+        }            
+
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
         }
 
         .keyboard {
@@ -62,6 +107,10 @@
             width: 3.5em;
         }
 
+        .keyboard__row--h2>div {
+            width: 1.75em;
+        }
+
         .keyboard__row>div[data-pressed],
         .keyboard__row>div:active {
             background: #ff0101;
@@ -85,6 +134,25 @@
 
         .key--w6 {
             width: 8.3em;
+        }
+
+        .key--w7 {
+            width: 7em;
+        }
+
+        .key--h1 {
+            height: 223%;
+        }
+
+        .key--r1 {
+            margin-right: 1em;
+        }
+        .key--r2 {
+            margin-right: 4em;
+        }
+
+        .key--r3 {
+            margin-right: 15.7em;
         }
 
         .key--space {
@@ -161,12 +229,28 @@
                 // newLine.textContent = JSON.stringify(data['data']);
                 // logContainer.appendChild(newLine);
 
+                var newLine = document.createElement('div');
+                newLine.textContent = JSON.stringify(data['data']);
+                logContainer.appendChild(newLine);
+
                 var scan_code = data['data']['scan_code'];
                 var buttonDOM = document.getElementById("SC-" + scan_code);
 
                 var action = data['data']['action'];
                 if (action == "PRESS")
                     // document.getElementById("SC-1").setAttribute('data-pressed', '');
+                    document.getElementById("SC-1").setAttribute('data-pressed', '');
+
+                    // var div = document.getElementById('content');
+                    // var p = document.createElement('p');
+                    // p.style.color = 'black';
+                    // p.textContent = buttonDOM.data-key;
+                    // div.appendChild(p);
+                    
+                    // var newLine = document.createElement('content');
+                    // newLine.textContent = JSON.stringify(data['data']);
+                    // logContainer.appendChild(newLine)
+
                     buttonDOM.setAttribute('data-pressed', '');
                 else if (action == "RELEASE") {
                     buttonDOM.removeAttribute('data-pressed');
@@ -178,233 +262,279 @@
 </head>
 
 <body>
-
+<!-- 
     <p>{{ ip }}</p>
-    <br>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4" />
-    <br>
-    <!-- <div id="logContainer"></div> -->
+    <br> -->
+    <div class="screen_base">
+        <div class="row">
+            <div class="column--left">
+                <br>
+                <p>{{ ip }}</p>
+                <br>
+                <a href="{{ url_for('feeder') }}">Go to Injector</a>
+                <br>
+                <br>
+                <br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4" />
+            </div>
+            <div class="column--right">
+                <div class="container1">
+                    <h1>KEYLOGGER 101</h1>
+                    <div id="logContainer"></div>
+                    <!-- <div id='content'>
+                        <p style='color:black;'>I existed before</p>
+                     </div> -->
+                     <!-- <script>
+                        var div = document.getElementById('content');
+                        var p = document.createElement('p');
+                        p.style.color = 'black';
+                        p.textContent = 'I was appended to the div';
+                        div.appendChild(p);
+                     </script> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div id="">
-        <div class="keyboard">
-            <div class="keyboard__row keyboard__row--h1">
-                <div id="SC-1" data-key="27" class="key--word">
-                    <span>esc</span>
+    <div class="keyboard_base">
+            <div class="keyboard">
+                <div class="keyboard__row keyboard__row--h1">
+                    <div id="SC-1" data-key="27" class="key--word">
+                        <span>esc</span>
+                    </div>
+                    <div id="SC-59" data-key="112" class="key--fn">
+                        <span>F1</span>
+                    </div>
+                    <div id="SC-60" data-key="113" class="key--fn">
+                        <span>F2</span>
+                    </div>
+                    <div id="SC-61" data-key="114" class="key--fn">
+                        <span>F3</span>
+                    </div>
+                    <div id="SC-62" data-key="115" class="key--fn">
+                        <span>F4</span>
+                    </div>
+                    <div id="SC-63" data-key="116" class="key--fn">
+                        <span>F5</span>
+                    </div>
+                    <div id="SC-64" data-key="117" class="key--fn">
+                        <span>F6</span>
+                    </div>
+                    <div id="SC-65" data-key="118" class="key--fn">
+                        <span>F7</span>
+                    </div>
+                    <div id="SC-66" data-key="119" class="key--fn">
+                        <span>F8</span>
+                    </div>
+                    <div id="SC-67" data-key="120" class="key--fn">
+                        <span>F9</span>
+                    </div>
+                    <div id="SC-68" data-key="121" class="key--fn">
+                        <span>F10</span>
+                    </div>
+                    <div id="SC-87" data-key="122" class="key--fn">
+                        <span>F11</span>
+                    </div>
+                    <div id="SC-88" data-key="123" class="key--fn">
+                        <span>F12</span>
+                    </div>
+                    <div data-key="n/a" class="key--word key--r3">
+                        <span>pwr</span>
+                    </div>
                 </div>
-                <div id="SC-59" data-key="112" class="key--fn">
-                    <span>F1</span>
+                <div class="keyboard__row">
+                    <div class="key--double" data-key="192" id="SC-41">
+                        <div>~</div>
+                        <div>`</div>
+                    </div>
+                    <div class="key--double" data-key="49" id="SC-2">
+                        <div>!</div>
+                        <div>1</div>
+                    </div>
+                    <div class="key--double" data-key="50" id="SC-3">
+                        <div>@</div>
+                        <div>2</div>
+                    </div>
+                    <div class="key--double" data-key="51" id="SC-4">
+                        <div>#</div>
+                        <div>3</div>
+                    </div>
+                    <div class="key--double" data-key="52" id="SC-5">
+                        <div>$</div>
+                        <div>4</div>
+                    </div>
+                    <div class="key--double" data-key="53" id="SC-6">
+                        <div>%</div>
+                        <div>5</div>
+                    </div>
+                    <div class="key--double" data-key="54" id="SC-7">
+                        <div>^</div>
+                        <div>6</div>
+                    </div>
+                    <div class="key--double" data-key="55" id="SC-8">
+                        <div>&</div>
+                        <div>7</div>
+                    </div>
+                    <div class="key--double" data-key="56" id="SC-9">
+                        <div>*</div>
+                        <div>8</div>
+                    </div>
+                    <div class="key--double" data-key="57" id="SC-10">
+                        <div>(</div>
+                        <div>9</div>
+                    </div>
+                    <div class="key--double" data-key="48" id="SC-11">
+                        <div>)</div>
+                        <div>0</div>
+                    </div>
+                    <div class="key--double" data-key="189" id="SC-12">
+                        <div>_</div>
+                        <div>-</div>
+                    </div>
+                    <div class="key--double" data-key="187" id="SC-13">
+                        <div>+</div>
+                        <div>=</div>
+                    </div>
+                    <div class="key--bottom-right key--word key--w4 key--r1" data-key="8" id="SC-111">
+                        <span>delete</span>
+                    </div>
+                    <div class="key--word" data-key="/numlock " id="SC-69">num</div>
+                    <div class="key--letter" data-char="/" id="SC-98">/</div>
+                    <div class="key--letter" data-char="*" id="SC-55">*</div>
+                    <div class="key--letter" data-char="-" id="SC-74">-</div>
                 </div>
-                <div id="SC-60" data-key="113" class="key--fn">
-                    <span>F2</span>
+                <div class="keyboard__row">
+                    <div class="key--bottom-left key--word key--w4" data-key="9" id="SC-15">
+                        <span>tab</span>
+                    </div>
+                    <div class="key--letter" data-char="Q" id="SC-16">Q</div>
+                    <div class="key--letter" data-char="W" id="SC-17">W</div>
+                    <div class="key--letter" data-char="E" id="SC-18">E</div>
+                    <div class="key--letter" data-char="R" id="SC-19">R</div>
+                    <div class="key--letter" data-char="T" id="SC-20">T</div>
+                    <div class="key--letter" data-char="Y" id="SC-21">Y</div>
+                    <div class="key--letter" data-char="U" id="SC-22">U</div>
+                    <div class="key--letter" data-char="I" id="SC-23">I</div>
+                    <div class="key--letter" data-char="O" id="SC-24">O</div>
+                    <div class="key--letter" data-char="P" id="SC-25">P</div>
+                    <div class="key--double" data-key="219" data-char="{[" id="SC-26">
+                        <div>{</div>
+                        <div>[</div>
+                    </div>
+                    <div class="key--double" data-key="221" data-char="}]" id="SC-27">
+                        <div>}</div>
+                        <div>]</div>
+                    </div>
+                    <div class="key--double key--r1" data-key="220" data-char="|\" id="SC-43">
+                        <div>|</div>
+                        <div>\</div>
+                    </div>
+                    <div class="key--letter" data-char="7" id="SC-71">7</div>
+                    <div class="key--letter" data-char="8" id="SC-72">8</div>
+                    <div class="key--letter" data-char="9" id="SC-73">9</div>
+                    <div class="key--letter key--h1" data-char="SC-78" id="">+</div>
                 </div>
-                <div id="SC-61" data-key="114" class="key--fn">
-                    <span>F3</span>
+                <div class="keyboard__row">
+                    <div class="key--bottom-left key--word key--w5" data-key="20" id="SC-58">
+                        <span>caps lock</span>
+                    </div>
+                    <div class="key--letter" data-char="A" id="SC-30">A</div>
+                    <div class="key--letter" data-char="S" id="SC-31">S</div>
+                    <div class="key--letter" data-char="D" id="SC-32">D</div>
+                    <div class="key--letter" data-char="F" id="SC-33">F</div>
+                    <div class="key--letter" data-char="G" id="SC-34">G</div>
+                    <div class="key--letter" data-char="H" id="SC-35">H</div>
+                    <div class="key--letter" data-char="J" id="SC-36">J</div>
+                    <div class="key--letter" data-char="K" id="SC-37">K</div>
+                    <div class="key--letter" data-char="L" id="SC-38">L</div>
+                    <div class="key--double" data-key="186" id="SC-39">
+                        <div>:</div>
+                        <div>;</div>
+                    </div>
+                    <div class="key--double" data-key="222" id="SC-40">
+                        <div>"</div>
+                        <div>'</div>
+                    </div>
+                    <div class="key--bottom-right key--word key--w5 key--r1" data-key="13" id="SC-28">
+                        <span>return</span>
+                    </div>
+                    <div class="key--letter" data-char="4" id="SC-75">4</div>
+                    <div class="key--letter" data-char="5" id="SC-76">5</div>
+                    <div class="key--letter key--r2" data-char="6" id="SC-77">6</div>
                 </div>
-                <div id="SC-62" data-key="115" class="key--fn">
-                    <span>F4</span>
+                <div class="keyboard__row">
+                    <div class="key--bottom-left key--word key--w6" data-key="16" id="SC-42">
+                        <span>shift</span>
+                    </div>
+                    <div class="key--letter" data-char="Z" id="SC-44">Z</div>
+                    <div class="key--letter" data-char="X" id="SC-45">X</div>
+                    <div class="key--letter" data-char="C" id="SC-46">C</div>
+                    <div class="key--letter" data-char="V" id="SC-47">V</div>
+                    <div class="key--letter" data-char="B" id="SC-48">B</div>
+                    <div class="key--letter" data-char="N" id="SC-49">N</div>
+                    <div class="key--letter" data-char="M" id="SC-50">M</div>
+                    <div class="key--double" data-key="188" id="SC-51">
+                        <div>&lt;</div>
+                        <div>,</div>
+                    </div>
+                    <div class="key--double" data-key="190" id="SC-52">
+                        <div>&gt;</div>
+                        <div>.</div>
+                    </div>
+                    <div class="key--double" data-key="191" id="SC-53">
+                        <div>?</div>
+                        <div>/</div>
+                    </div>
+                    <div class="key--bottom-right key--word key--w6 key--r1" data-key="16-R" id="SC-54">
+                        <span>shift</span>
+                    </div>
+                    <div class="key--letter" data-char="1" id="SC-79">1</div>
+                    <div class="key--letter" data-char="2" id="SC-80">2</div>
+                    <div class="key--letter" data-char="3" id="SC-81">3</div>
+                    <div class="key--letter key--h1" data-key="\n" id="SC-96">Enter</div>
                 </div>
-                <div id="SC-63" data-key="116" class="key--fn">
-                    <span>F5</span>
-                </div>
-                <div id="SC-64" data-key="117" class="key--fn">
-                    <span>F6</span>
-                </div>
-                <div id="SC-65" data-key="118" class="key--fn">
-                    <span>F7</span>
-                </div>
-                <div id="SC-66" data-key="119" class="key--fn">
-                    <span>F8</span>
-                </div>
-                <div id="SC-67" data-key="120" class="key--fn">
-                    <span>F9</span>
-                </div>
-                <div id="SC-68" data-key="121" class="key--fn">
-                    <span>F10</span>
-                </div>
-                <div id="SC-87" data-key="122" class="key--fn">
-                    <span>F11</span>
-                </div>
-                <div id="SC-88" data-key="123" class="key--fn">
-                    <span>F12</span>
-                </div>
-                <div data-key="n/a" class="key--word">
-                    <span>pwr</span>
-                </div>
-            </div>
-            <div class="keyboard__row">
-                <div class="key--double" data-key="192" id="SC-41">
-                    <div>~</div>
-                    <div>`</div>
-                </div>
-                <div class="key--double" data-key="49" id="SC-2">
-                    <div>!</div>
-                    <div>1</div>
-                </div>
-                <div class="key--double" data-key="50" id="SC-3">
-                    <div>@</div>
-                    <div>2</div>
-                </div>
-                <div class="key--double" data-key="51" id="SC-4">
-                    <div>#</div>
-                    <div>3</div>
-                </div>
-                <div class="key--double" data-key="52" id="SC-5">
-                    <div>$</div>
-                    <div>4</div>
-                </div>
-                <div class="key--double" data-key="53" id="SC-6">
-                    <div>%</div>
-                    <div>5</div>
-                </div>
-                <div class="key--double" data-key="54" id="SC-7">
-                    <div>^</div>
-                    <div>6</div>
-                </div>
-                <div class="key--double" data-key="55" id="SC-8">
-                    <div>&</div>
-                    <div>7</div>
-                </div>
-                <div class="key--double" data-key="56" id="SC-9">
-                    <div>*</div>
-                    <div>8</div>
-                </div>
-                <div class="key--double" data-key="57" id="SC-10">
-                    <div>(</div>
-                    <div>9</div>
-                </div>
-                <div class="key--double" data-key="48" id="SC-11">
-                    <div>)</div>
-                    <div>0</div>
-                </div>
-                <div class="key--double" data-key="189" id="SC-12">
-                    <div>_</div>
-                    <div>-</div>
-                </div>
-                <div class="key--double" data-key="187" id="SC-13">
-                    <div>+</div>
-                    <div>=</div>
-                </div>
-                <div class="key--bottom-right key--word key--w4" data-key="8" id="SC-111">
-                    <span>delete</span>
-                </div>
-            </div>
-            <div class="keyboard__row">
-                <div class="key--bottom-left key--word key--w4" data-key="9" id="SC-15">
-                    <span>tab</span>
-                </div>
-                <div class="key--letter" data-char="Q" id="SC-16">Q</div>
-                <div class="key--letter" data-char="W" id="SC-17">W</div>
-                <div class="key--letter" data-char="E" id="SC-18">E</div>
-                <div class="key--letter" data-char="R" id="SC-19">R</div>
-                <div class="key--letter" data-char="T" id="SC-20">T</div>
-                <div class="key--letter" data-char="Y" id="SC-21">Y</div>
-                <div class="key--letter" data-char="U" id="SC-22">U</div>
-                <div class="key--letter" data-char="I" id="SC-23">I</div>
-                <div class="key--letter" data-char="O" id="SC-24">O</div>
-                <div class="key--letter" data-char="P" id="SC-25">P</div>
-                <div class="key--double" data-key="219" data-char="{[" id="SC-26">
-                    <div>{</div>
-                    <div>[</div>
-                </div>
-                <div class="key--double" data-key="221" data-char="}]" id="SC-27">
-                    <div>}</div>
-                    <div>]</div>
-                </div>
-                <div class="key--double" data-key="220" data-char="|\" id="SC-43">
-                    <div>|</div>
-                    <div>\</div>
-                </div>
-            </div>
-            <div class="keyboard__row">
-                <div class="key--bottom-left key--word key--w5" data-key="20" id="SC-58">
-                    <span>caps lock</span>
-                </div>
-                <div class="key--letter" data-char="A" id="SC-30">A</div>
-                <div class="key--letter" data-char="S" id="SC-31">S</div>
-                <div class="key--letter" data-char="D" id="SC-32">D</div>
-                <div class="key--letter" data-char="F" id="SC-33">F</div>
-                <div class="key--letter" data-char="G" id="SC-34">G</div>
-                <div class="key--letter" data-char="H" id="SC-35">H</div>
-                <div class="key--letter" data-char="J" id="SC-36">J</div>
-                <div class="key--letter" data-char="K" id="SC-37">K</div>
-                <div class="key--letter" data-char="L" id="SC-38">L</div>
-                <div class="key--double" data-key="186" id="SC-39">
-                    <div>:</div>
-                    <div>;</div>
-                </div>
-                <div class="key--double" data-key="222" id="SC-40">
-                    <div>"</div>
-                    <div>'</div>
-                </div>
-                <div class="key--bottom-right key--word key--w5" data-key="13" id="SC-28">
-                    <span>return</span>
-                </div>
-            </div>
-            <div class="keyboard__row">
-                <div class="key--bottom-left key--word key--w6" data-key="16" id="SC-42">
-                    <span>shift</span>
-                </div>
-                <div class="key--letter" data-char="Z" id="SC-44">Z</div>
-                <div class="key--letter" data-char="X" id="SC-45">X</div>
-                <div class="key--letter" data-char="C" id="SC-46">C</div>
-                <div class="key--letter" data-char="V" id="SC-47">V</div>
-                <div class="key--letter" data-char="B" id="SC-48">B</div>
-                <div class="key--letter" data-char="N" id="SC-49">N</div>
-                <div class="key--letter" data-char="M" id="SC-50">M</div>
-                <div class="key--double" data-key="188" id="SC-51">
-                    <div>&lt;</div>
-                    <div>,</div>
-                </div>
-                <div class="key--double" data-key="190" id="SC-52">
-                    <div>&gt;</div>
-                    <div>.</div>
-                </div>
-                <div class="key--double" data-key="191" id="SC-53">
-                    <div>?</div>
-                    <div>/</div>
-                </div>
-                <div class="key--bottom-right key--word key--w6" data-key="16-R" id="SC-54">
-                    <span>shift</span>
-                </div>
-            </div>
-            <div class="keyboard__row keyboard__row--h3">
-                <div class="key--bottom-left key--word">
-                    <span>fn</span>
-                </div>
-                <div class="key--bottom-left key--word key--w1" data-key="17" id="SC-29">
-                    <span>control</span>
-                </div>
-                <div class="key--bottom-left key--word key--w1" data-key="18">
-                    <span>option</span>
-                </div>
-                <div class="key--bottom-right key--word key--w3" data-key="91" id="SC-125">
-                    <span>command</span>
-                </div>
-                <div class="key--double key--right key--space" data-key="32" data-char=" " id="SC-57">
-                    &nbsp;
-                </div>
-                <div class="key--bottom-left key--word key--w3" data-key="93-R" id="SC-126">
-                    <span>command</span>
-                </div>
-                <div class="key--bottom-left key--word key--w1" data-key="18-R">
-                    <span>option</span>
-                </div>
-                <div data-key="37" class="key--arrow">
-                    <span>&#9664;</span>
-                </div>
-                <div class="key--double key--arrow--tall" data-key="38">
-                    <div>&#9650;</div>
-                    <div>&#9660;</div>
-                </div>
-                <div data-key="39" class="key--arrow">
-                    <span>&#9654;</span>
+                <div class="keyboard__row keyboard__row--h3">
+                    <div class="key--bottom-left key--word">
+                        <span>fn</span>
+                    </div>
+                    <div class="key--bottom-left key--word key--w1" data-key="17" id="SC-29">
+                        <span>control</span>
+                    </div>
+                    <div class="key--bottom-left key--word key--w1" data-key="18">
+                        <span>option</span>
+                    </div>
+                    <div class="key--bottom-right key--word key--w3" data-key="91" id="SC-125">
+                        <span>command</span>
+                    </div>
+                    <div class="key--double key--space" data-key="32" data-char=" " id="SC-57">
+                        &nbsp;
+                    </div>
+                    <div class="key--bottom-left key--word key--w3" data-key="93-R" id="SC-126">
+                        <span>command</span>
+                    </div>
+                    <div class="key--bottom-left key--word key--w1" data-key="18-R">
+                        <span>option</span>
+                    </div>
+                    <div data-key="37" class="key--arrow">
+                        <span>&#9664;</span>
+                    </div>
+                    <div class="column">
+                    <div class="key--double key--arrow--tall" data-key="38">
+                        <div>&#9650;</div>
+                        <div>&#9660;</div>
+                    </div>
+                    </div>
+                    <div data-key="39" class="key--arrow key--r1">
+                        <span>&#9654;</span>
+                    </div>
+                    <div class="key--letter key--w7" data-char="0" id="SC-82">0</div>
+                    <div class="key--letter key--r2" data-char="." id="SC-83">.</div>
                 </div>
             </div>
         </div>
     </div>
     <br>
-
-    <a href="{{ url_for('feeder') }}">Go to Injector</a>
-
-</body>
+    </body>
 
 </html>

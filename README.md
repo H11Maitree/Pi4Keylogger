@@ -42,7 +42,7 @@ Upon successful activation you should see `dev/hidg0` when explore the file (e.g
 - [eventlet](https://pypi.org/project/eventlet/)
 - [redis](https://pypi.org/project/redis/)
 
-### Redis Demon
+### Redis Daemon
 Dowload Redis from the [official site](https://redis.io/download/)
 
 You should beable to start the Redis Deamon by:

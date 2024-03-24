@@ -51,7 +51,7 @@ sudo systemctl start redis
 ```
 
 
-## Get Start
+## Getting Started
 1. Get into the project Directory
 ```bash
 cd ~/PATH/Pi4KeyLogger

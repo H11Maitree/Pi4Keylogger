@@ -5,14 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-
         body {
-            background-color: lightblue;
+            background-color: grey;
+            align-items: center;
+            max-width: max-content;
         }
+
         #logContainer {
-            white-space: pre;
-            overflow-x: auto;
+            display: flex;
+            /* Use Flexbox for horizontal layout */
+            overflow-x: scroll;
+            /* Enable horizontal scrolling */
+            white-space: nowrap;
+            /* Ensure items stay in a horizontal line */
+            height: 6em;
         }
 
         h1 {
@@ -21,46 +29,71 @@
             font-family: monospace;
             padding: 0.7em;
         }
-        
+
+        .middle {
+            vertical-align: middle;
+            align-content: center;
+        }
+
         .screen_base {
-            border: 20px outset black;
-            background-color: grey;    
+            border-radius: 10px;
+            background-color: transparent;
             text-align: center;
             width: 97%;
-            height: 30em;
+            height: 16em;
             align-items: center;
             margin: 0 auto;
+        }
+
+        .button{
+            border-radius: 20px;
+            background-color: grey;
+            text-align: center;
+            height: 20em;
+            align-items: center;
         }
 
         .keyboard_base {
-            border: 20px outset black;
-            background-color: grey;    
+            background-color: #aaa;
             text-align: center;
             width: 97%;
             align-items: center;
+            vertical-align: middle;
             margin: 0 auto;
+            height: 20em;
         }
 
         .column--left {
-        float: left;
-        width: 20%;
+            float: left;
+            width: 20%;
+            align-items: center;
+            display:table;
+            vertical-align: middle;
         }
 
         .column--right {
-        float: left;
-        width: 80%;
+            background-color: #aaa;
+            float: left;
+            width: 80%;
+            height: 100%;
         }
 
-        .container1{
-        background: white;
-        width: 98%;
-        height: 100%;
-        }            
+        .
+        .column{
+            display:block
+            width: 3.3em;
+        }
+
+        .container1 {
+            background: transparent;
+            width: 98%;
+            height: 100%;
+        }
 
         .row:after {
-        content: "";
-        display: table;
-        clear: both;
+            content: "";
+            display: table;
+            clear: both;
         }
 
         .keyboard {
@@ -110,6 +143,10 @@
         .keyboard__row--h2>div {
             width: 1.75em;
         }
+        
+        .keyboard__row--h3>div {
+            height: 20em;
+        }
 
         .keyboard__row>div[data-pressed],
         .keyboard__row>div:active {
@@ -147,6 +184,7 @@
         .key--r1 {
             margin-right: 1em;
         }
+
         .key--r2 {
             margin-right: 4em;
         }
@@ -163,7 +201,8 @@
             padding-top: 0.1em;
         }
 
-        .key--letter {
+        .key--letter>* {
+            align-content: center;
             line-height: 2.8em;
         }
 
@@ -198,12 +237,31 @@
         .key--arrow>* {
             font-size: 0.5em;
             line-height: 3em;
+            width: 3.3em;
         }
 
         .key--arrow {
             height: 1.8em;
             margin-top: 1.7em;
             line-height: 0.5em;
+            width: 3.3em;
+        }
+
+        .key--arrow--up { 
+            font-size: 0.6em;
+            height: 1.8em;
+            width: 3.3em;
+            line-height: 0.5em;
+            bottom: 0.5em;
+        }
+
+        .key--arrow--down { 
+            font-size: 0.6em;
+            height: 1.8em;
+            bottom: 3.5em;
+            width: 3.3em;
+            line-height: 0.5em;
+            background: transparent;
         }
 
         .key--arrow--tall>* {
@@ -213,11 +271,35 @@
         .keyboard>.keyboard__row {
             text-align: center;
         }
+        
+        .a-container {
+            padding: 1rem;
+        }
+
+        .a-container a {
+            color: white;
+        }
+
     </style>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
         integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
         crossorigin="anonymous"></script>
     <script>
+        function appendNewButtonElement(scan_code) {
+
+            htmlContent = document.getElementById("SC-" + scan_code).outerHTML.replace("SC-" + scan_code, "");
+            // Create a new div element
+            const newItem = document.createElement('div');
+            newItem.classList.add('item');
+            newItem.innerHTML = htmlContent;
+            newItem.style["width"] = "3.3em";
+            newItem.style["height"] = "3.3em";
+            // Append the new element to the container
+            const container = document.getElementById('logContainer');
+            container.appendChild(newItem);
+            // Scroll the container to the right
+            container.scrollLeft = container.scrollWidth;
+        }
         document.addEventListener('DOMContentLoaded', function () {
             const socket = io();
             const logContainer = document.getElementById('logContainer');
@@ -225,79 +307,51 @@
             socket.on('keylogger', function (data) {
                 console.log('Received keylogger:', data);
 
-                // var newLine = document.createElement('div');
-                // newLine.textContent = JSON.stringify(data['data']);
-                // logContainer.appendChild(newLine);
-
-                var newLine = document.createElement('div');
-                newLine.textContent = JSON.stringify(data['data']);
-                logContainer.appendChild(newLine);
-
                 var scan_code = data['data']['scan_code'];
                 var buttonDOM = document.getElementById("SC-" + scan_code);
-
                 var action = data['data']['action'];
-                if (action == "PRESS")
-                    // document.getElementById("SC-1").setAttribute('data-pressed', '');
-                    document.getElementById("SC-1").setAttribute('data-pressed', '');
-
-                    // var div = document.getElementById('content');
-                    // var p = document.createElement('p');
-                    // p.style.color = 'black';
-                    // p.textContent = buttonDOM.data-key;
-                    // div.appendChild(p);
+                if (action == "PRESS") {
                     
-                    // var newLine = document.createElement('content');
-                    // newLine.textContent = JSON.stringify(data['data']);
-                    // logContainer.appendChild(newLine)
-
                     buttonDOM.setAttribute('data-pressed', '');
-                else if (action == "RELEASE") {
+                    appendNewButtonElement(scan_code);
+                } else if (action == "RELEASE") {
                     buttonDOM.removeAttribute('data-pressed');
                 }
 
             });
         });
     </script>
+    <script>
+        function clearBox(elementID)
+        {
+            document.getElementById(elementID).innerHTML = "";
+        }
+    </script>
 </head>
 
 <body>
-<!-- 
-    <p>{{ ip }}</p>
-    <br> -->
+    <br>
     <div class="screen_base">
-        <div class="row">
-            <div class="column--left">
-                <br>
-                <p>{{ ip }}</p>
-                <br>
-                <a href="{{ url_for('feeder') }}">Go to Injector</a>
-                <br>
-                <br>
-                <br>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4" />
-            </div>
-            <div class="column--right">
-                <div class="container1">
-                    <h1>KEYLOGGER 101</h1>
-                    <div id="logContainer"></div>
-                    <!-- <div id='content'>
-                        <p style='color:black;'>I existed before</p>
-                     </div> -->
-                     <!-- <script>
-                        var div = document.getElementById('content');
-                        var p = document.createElement('p');
-                        p.style.color = 'black';
-                        p.textContent = 'I was appended to the div';
-                        div.appendChild(p);
-                     </script> -->
+        <div class="middle">
+            <div class="row">
+                <div class="column--left">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4" height="205"  />
+                </div>
+                <div class="column--right">
+                    <div class="container1">
+                        <div class="row">
+                            <h1>KEYLOGGER 101</h1>
+                            <b>IP address: {{ ip }}</b>
+                        </div>       
+                        <div id="logContainer" class="keyboard__row"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
     <div id="">
-    <div class="keyboard_base">
+        <div class="keyboard_base">
+            <!-- <div class="middle"> -->
             <div class="keyboard">
                 <div class="keyboard__row keyboard__row--h1">
                     <div id="SC-1" data-key="27" class="key--word">
@@ -339,8 +393,8 @@
                     <div id="SC-88" data-key="123" class="key--fn">
                         <span>F12</span>
                     </div>
-                    <div data-key="n/a" class="key--word key--r3">
-                        <span>pwr</span>
+                    <div data-key="n/a" class="key--word key--r3" id="SC-110">
+                        <span>Insert</span>
                     </div>
                 </div>
                 <div class="keyboard__row">
@@ -396,8 +450,8 @@
                         <div>+</div>
                         <div>=</div>
                     </div>
-                    <div class="key--bottom-right key--word key--w4 key--r1" data-key="8" id="SC-111">
-                        <span>delete</span>
+                    <div class="key--bottom-right key--word key--w4 key--r1" data-key="8" id="SC-14">
+                        <span>Backspace</span>
                     </div>
                     <div class="key--word" data-key="/numlock " id="SC-69">num</div>
                     <div class="key--letter" data-char="/" id="SC-98">/</div>
@@ -433,7 +487,7 @@
                     <div class="key--letter" data-char="7" id="SC-71">7</div>
                     <div class="key--letter" data-char="8" id="SC-72">8</div>
                     <div class="key--letter" data-char="9" id="SC-73">9</div>
-                    <div class="key--letter key--h1" data-char="SC-78" id="">+</div>
+                    <div class="key--letter key--h1" data-char="SC-78" id="SC-78">+</div>
                 </div>
                 <div class="keyboard__row">
                     <div class="key--bottom-left key--word key--w5" data-key="20" id="SC-58">
@@ -457,7 +511,7 @@
                         <div>'</div>
                     </div>
                     <div class="key--bottom-right key--word key--w5 key--r1" data-key="13" id="SC-28">
-                        <span>return</span>
+                        <span>Enter</span>
                     </div>
                     <div class="key--letter" data-char="4" id="SC-75">4</div>
                     <div class="key--letter" data-char="5" id="SC-76">5</div>
@@ -494,47 +548,61 @@
                     <div class="key--letter" data-char="3" id="SC-81">3</div>
                     <div class="key--letter key--h1" data-key="\n" id="SC-96">Enter</div>
                 </div>
-                <div class="keyboard__row keyboard__row--h3">
-                    <div class="key--bottom-left key--word">
-                        <span>fn</span>
-                    </div>
+
+                <div class="keyboard__row">
                     <div class="key--bottom-left key--word key--w1" data-key="17" id="SC-29">
-                        <span>control</span>
+                        <span>Ctrl</span>
                     </div>
-                    <div class="key--bottom-left key--word key--w1" data-key="18">
+                    <div class="key--bottom-left key--word" id="SC-">
+                        <span>fn</span>  
+                    </div>
+                    <div class="key--bottom-left key--word key--w1" data-key="18" id="SC-125">
                         <span>option</span>
                     </div>
-                    <div class="key--bottom-right key--word key--w3" data-key="91" id="SC-125">
-                        <span>command</span>
+                    <div class="key--bottom-right key--word key--w3" data-key="91" id="SC-56">
+                        <span>Alt</span>
                     </div>
                     <div class="key--double key--space" data-key="32" data-char=" " id="SC-57">
                         &nbsp;
                     </div>
-                    <div class="key--bottom-left key--word key--w3" data-key="93-R" id="SC-126">
-                        <span>command</span>
+                    <div class="key--bottom-left key--word key--w3" data-key="93-R" id="SC-100">
+                        <span>Alt</span>
                     </div>
-                    <div class="key--bottom-left key--word key--w1" data-key="18-R">
-                        <span>option</span>
+                    <div class="key--bottom-left key--word key--w1" id="SC-97">
+                        <span>Ctrl</span>
                     </div>
-                    <div data-key="37" class="key--arrow">
+                    <div data-key="37" class="key--arrow" id="SC-105">
                         <span>&#9664;</span>
                     </div>
                     <div class="column">
-                    <div class="key--double key--arrow--tall" data-key="38">
-                        <div>&#9650;</div>
-                        <div>&#9660;</div>
+                        <div class="keyboard__row">
+                            <div data-key="37" class="key--arrow--up" id="SC-103">
+                                <span>&#9650;</span>
+                            </div>
+                        </div>
+                        <div class="keyboard__row"> 
+                            <div data-key="37" class="key--arrow--down" id="SC-108">
+                                <span>&#9660;</span>
+                            </div>
+                        </div>
                     </div>
-                    </div>
-                    <div data-key="39" class="key--arrow key--r1">
+                    <div data-key="39" class="key--arrow key--r1" id="SC-106">
                         <span>&#9654;</span>
                     </div>
                     <div class="key--letter key--w7" data-char="0" id="SC-82">0</div>
                     <div class="key--letter key--r2" data-char="." id="SC-83">.</div>
                 </div>
             </div>
+            <!-- </div> -->
         </div>
     </div>
     <br>
-    </body>
+    <div class="a-container">
+        <a class="btn btn-secondary bth-lg" href="{{ url_for('feeder') }}">Go to Injector</a>
+    </div>
+    <div class="a-container">
+        <a class="btn btn-secondary bth-lg" onclick="clearBox('logContainer')">Clear keylogger</a>
+    </div>
+</body>
 
 </html>

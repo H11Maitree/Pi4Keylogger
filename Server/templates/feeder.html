@@ -27,6 +27,22 @@
                 input.value = '';
             }
         };
+
+        let textarea = document.getElementById("injectInput");
+        let currentElement = document.getElementById("div1");
+        document.getElementById("injectInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+            // Append the new line to the existing text content
+                currentElement.textContent += "\n";
+            } else {
+                currentElement.textContent += event.key;
+            }
+        });
+
+        clearButton.addEventListener("click", function() {
+            currentElement.textContent = "";
+            textarea.value = "";
+        });
     });
     </script>
 
@@ -42,7 +58,7 @@
             position: relative;
              padding: 1.5rem;
             border-radius: 10px;
-            background-color: rgb(199, 218, 255);
+            background-color: #c2c2c2;
         }
 
         .ip {
@@ -89,6 +105,42 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #clearButton {
+            padding: 5px 10px;
+            background-color: #4cafa3;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #div1 {
+            overflow-x: scroll;
+			background-color: white;
+            white-space: pre-wrap;
+        }
+
+        @media only screen and (max-width: 1000px) {
+
+            .input-container {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #sendButton {
+                margin: 10px 0;
+            }
+
+            #clearButton {
+                margin-bottom: 30px;
+            }
+
+            .qr-code-text {
+                font-size: 2rem;
+            }
         }
 
     </style>
@@ -107,10 +159,12 @@
                     <br><br><br><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://{{ ip }}" class="mb-4"/>
                 </div>
             </div>
+            <div id="div1" style="width: 10emx;height: 10em; overflow-x: scroll; background-color: white; white-space: pre-wrap;"></div>
             <br>
             <div class="input-container">
                 <input type="text" id="injectInput" placeholder="Enter text to inject"> 
                 <button id="sendButton">Send</button>
+                <button id="clearButton">Clear Injector</button>
             </div>
         </div>
         <a class="btn btn-secondary btn-lg" role="button" href="{{ url_for('observer') }}">Go to KeyLogger</a>

@@ -44,7 +44,9 @@ def keylogger_listener():
     redis_thread = threading.Thread(target=redis_callback)
     redis_thread.start()
 
-
-if __name__ == '__main__':
+def start():
     keylogger_listener()
     socketio.run(app, host='0.0.0.0', port='80', debug=True)
+
+if __name__ == '__main__':
+    start()
